@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="ka">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nino — Design Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --cream: #faf8f4;
+      --ivory: #f2ede4;
+      --sand: #e8dfd0;
+      --taupe: #c4b49a;
+      --mocha: #7a6652;
+      --espresso: #2e1f0f;
+      --blush: #d4a89a;
+      --rose: #b07060;
+      --charcoal: #1a1a1a;
+      --text: #3a2e26;
+      --light-text: #8a7a6a;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      cursor: none;
+      overflow-x: hidden;
+    }
+
+    /* CUSTOM CURSOR */
+    .cursor {
+      width: 10px; height: 10px;
+      background: var(--rose);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      transition: transform 0.15s ease;
+      mix-blend-mode: multiply;
+    }
+    .cursor-follow {
+      width: 36px; height: 36px;
+      border: 1px solid var(--rose);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9998;
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      opacity: 0.6;
+    }
+    a:hover ~ .cursor, button:hover ~ .cursor { transform: scale(3); }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 28px 60px;
+      display: flex; justify-content: space-between; align-items: center;
+      transition: all 0.4s ease;
+    }
+    nav.scrolled {
+      background: rgba(250, 248, 244, 0.92);
+      backdrop-filter: blur(12px);
+      padding: 18px 60px;
+      border-bottom: 1px solid var(--sand);
+    }
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 300;
+      letter-spacing: 0.15em;
+      color: var(--espresso);
+      text-decoration: none;
+    }
+    .logo span { color: var(--rose); font-style: italic; }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a {
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--mocha);
+      text-decoration: none;
+      position: relative;
+      transition: color 0.3s;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -3px; left: 0;
+      width: 0; height: 1px;
+      background: var(--rose);
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover { color: var(--rose); }
+    .nav-links a:hover::after { width: 100%; }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 1fr;
+      position: relative; overflow: hidden;
+    }
+    .hero-left {
+      padding: 140px 60px 80px;
+      display: flex; flex-direction: column; justify-content: center;
+      position: relative; z-index: 2;
+    }
+    .hero-tag {
+      font-size: 0.7rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--rose); margin-bottom: 24px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .hero-tag::before {
+      content: ''; width: 40px; height: 1px; background: var(--rose);
+    }
+    h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(4rem, 6vw, 6.5rem);
+      font-weight: 300; line-height: 1.0;
+      color: var(--espresso); margin-bottom: 8px;
+    }
+    h1 em { font-style: italic; color: var(--rose); }
+    .hero-subtitle {
+      font-size: 1rem; font-weight: 300;
+      color: var(--light-text); line-height: 1.7;
+      max-width: 380px; margin: 28px 0 48px;
+    }
+    .hero-cta {
+      display: flex; gap: 20px; align-items: center;
+    }
+    .btn-primary {
+      padding: 14px 36px;
+      background: var(--espresso); color: var(--cream);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+      border: none; text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+      position: relative; overflow: hidden;
+    }
+    .btn-primary::before {
+      content: '';
+      position: absolute; top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: var(--rose);
+      transition: left 0.3s ease;
+      z-index: -1;
+    }
+    .btn-primary:hover { color: var(--cream); }
+    .btn-primary:hover::before { left: 0; }
+    .btn-secondary {
+      font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--mocha); text-decoration: none;
+      display: flex; align-items: center; gap: 8px;
+      transition: gap 0.3s;
+    }
+    .btn-secondary:hover { gap: 14px; color: var(--rose); }
+    .hero-right {
+      position: relative; overflow: hidden;
+    }
+    .hero-image-frame {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-photo-placeholder {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, var(--sand) 0%, var(--taupe) 50%, var(--blush) 100%);
+      position: relative;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-end;
+      padding-bottom: 60px;
+    }
+    .photo-overlay-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 8rem; font-weight: 300; font-style: italic;
+      color: rgba(255,255,255,0.15);
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      white-space: nowrap; letter-spacing: -0.02em;
+      pointer-events: none;
+    }
+    .hero-stats {
+      position: absolute; bottom: 60px; left: 60px;
+      display: flex; gap: 40px;
+    }
+    .stat { text-align: left; }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem; font-weight: 300;
+      color: var(--espresso); line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--light-text); margin-top: 4px;
+    }
+    .hero-scroll-hint {
+      position: absolute; bottom: 40px; right: 60px;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--light-text);
+    }
+    .scroll-line {
+      width: 1px; height: 50px;
+      background: linear-gradient(to bottom, var(--rose), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 1; transform: scaleY(1); }
+      50% { opacity: 0.4; transform: scaleY(0.7); }
+    }
+
+    /* ABOUT */
+    #about {
+      padding: 120px 60px;
+      display: grid; grid-template-columns: 1fr 1.2fr;
+      gap: 80px; align-items: center;
+      background: var(--ivory);
+    }
+    .section-label {
+      font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--rose); margin-bottom: 20px;
+    }
+    h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 4vw, 3.5rem);
+      font-weight: 300; line-height: 1.2;
+      color: var(--espresso);
+    }
+    h2 em { font-style: italic; color: var(--rose); }
+    .about-text {
+      font-size: 1rem; font-weight: 300; line-height: 1.8;
+      color: var(--mocha); margin: 24px 0 36px;
+    }
+    .skills-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 16px; margin-top: 20px;
+    }
+    .skill-item {
+      padding: 16px 20px;
+      background: var(--cream);
+      border-left: 2px solid var(--blush);
+    }
+    .skill-name {
+      font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--espresso); font-weight: 500;
+    }
+    .skill-bar {
+      height: 2px; background: var(--sand); margin-top: 8px; position: relative;
+    }
+    .skill-fill {
+      height: 100%; background: linear-gradient(to right, var(--blush), var(--rose));
+      width: 0; transition: width 1.2s ease;
+    }
+    .about-image-side {
+      position: relative;
+    }
+    .about-photo {
+      width: 100%; aspect-ratio: 3/4;
+      background: linear-gradient(160deg, var(--sand), var(--taupe));
+      position: relative; overflow: hidden;
+    }
+    .about-photo-deco {
+      position: absolute; bottom: -20px; right: -20px;
+      width: 200px; height: 200px;
+      border: 1px solid var(--rose); opacity: 0.3;
+    }
+    .about-badge {
+      position: absolute; bottom: 30px; left: -20px;
+      background: var(--espresso); color: var(--cream);
+      padding: 20px 24px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-style: italic;
+      max-width: 180px; line-height: 1.4;
+    }
+
+    /* SERVICES */
+    #services {
+      padding: 120px 60px;
+      background: var(--cream);
+    }
+    .section-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 64px;
+    }
+    .services-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+    .service-card {
+      padding: 50px 40px;
+      background: var(--ivory);
+      position: relative; overflow: hidden;
+      transition: all 0.4s ease;
+      cursor: default;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute; bottom: 0; left: 0;
+      width: 100%; height: 0;
+      background: var(--espresso);
+      transition: height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      z-index: 0;
+    }
+    .service-card:hover::before { height: 100%; }
+    .service-card > * { position: relative; z-index: 1; }
+    .service-card:hover .service-num,
+    .service-card:hover .service-title,
+    .service-card:hover .service-desc,
+    .service-card:hover .service-tags span {
+      color: var(--cream) !important;
+    }
+    .service-card:hover .service-tags span {
+      border-color: rgba(255,255,255,0.3);
+    }
+    .service-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3rem; font-weight: 300;
+      color: var(--sand); line-height: 1;
+      margin-bottom: 20px; transition: color 0.4s;
+    }
+    .service-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem; font-weight: 400;
+      color: var(--espresso); margin-bottom: 16px;
+      transition: color 0.4s;
+    }
+    .service-desc {
+      font-size: 0.875rem; line-height: 1.7;
+      color: var(--light-text); margin-bottom: 24px;
+      transition: color 0.4s;
+    }
+    .service-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .service-tags span {
+      font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 5px 12px; border: 1px solid var(--sand);
+      color: var(--mocha); transition: all 0.4s;
+    }
+
+    /* PORTFOLIO */
+    #portfolio {
+      padding: 120px 60px;
+      background: var(--espresso);
+    }
+    #portfolio .section-label { color: var(--blush); }
+    #portfolio h2 { color: var(--cream); }
+    #portfolio .section-header { margin-bottom: 64px; }
+    .portfolio-filter {
+      display: flex; gap: 24px;
+    }
+    .filter-btn {
+      font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--taupe); background: none; border: none;
+      cursor: pointer; transition: color 0.3s; padding: 4px 0;
+      position: relative;
+    }
+    .filter-btn::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 0; height: 1px; background: var(--rose);
+      transition: width 0.3s;
+    }
+    .filter-btn.active { color: var(--blush); }
+    .filter-btn.active::after, .filter-btn:hover::after { width: 100%; }
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      grid-template-rows: auto auto;
+      gap: 16px;
+    }
+    .project-card {
+      overflow: hidden; position: relative;
+      background: var(--mocha);
+      cursor: pointer;
+    }
+    .project-card:nth-child(1) { grid-column: span 7; }
+    .project-card:nth-child(2) { grid-column: span 5; }
+    .project-card:nth-child(3) { grid-column: span 4; }
+    .project-card:nth-child(4) { grid-column: span 5; }
+    .project-card:nth-child(5) { grid-column: span 3; }
+    .project-thumb {
+      aspect-ratio: 4/3;
+      position: relative; overflow: hidden;
+    }
+    .project-card:nth-child(1) .project-thumb { aspect-ratio: 16/9; }
+    .project-bg {
+      width: 100%; height: 100%;
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+    .project-card:hover .project-bg { transform: scale(1.08); }
+    .bg1 { background: linear-gradient(135deg, #c4a882 0%, #8a6a4a 100%); }
+    .bg2 { background: linear-gradient(135deg, #b07080 0%, #7a4050 100%); }
+    .bg3 { background: linear-gradient(135deg, #82a0b0 0%, #4a6878 100%); }
+    .bg4 { background: linear-gradient(135deg, #a0b082 0%, #607040 100%); }
+    .bg5 { background: linear-gradient(135deg, #b09080 0%, #785040 100%); }
+    .project-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(30,15,5,0.85) 0%, transparent 60%);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 28px;
+      opacity: 0; transition: opacity 0.4s;
+    }
+    .project-card:hover .project-overlay { opacity: 1; }
+    .project-category {
+      font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--blush); margin-bottom: 6px;
+    }
+    .project-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; font-weight: 400; font-style: italic;
+      color: var(--cream);
+    }
+    .project-arrow {
+      position: absolute; top: 20px; right: 20px;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--rose); color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      transform: scale(0); transition: transform 0.3s ease;
+    }
+    .project-card:hover .project-arrow { transform: scale(1); }
+    .project-info {
+      padding: 16px 0;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .project-title-small {
+      font-size: 0.8rem; color: var(--taupe);
+    }
+    .project-year {
+      font-size: 0.7rem; color: var(--mocha);
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+    }
+
+    /* TESTIMONIALS */
+    #testimonials {
+      padding: 120px 60px;
+      background: var(--ivory);
+    }
+    .testimonials-container {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 32px; margin-top: 64px;
+    }
+    .testimonial-card {
+      padding: 40px; background: var(--cream);
+      position: relative;
+    }
+    .quote-mark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem; line-height: 0.5;
+      color: var(--blush); margin-bottom: 24px;
+      display: block;
+    }
+    .testimonial-text {
+      font-size: 0.9rem; line-height: 1.8; font-weight: 300;
+      color: var(--mocha); font-style: italic;
+      margin-bottom: 28px;
+    }
+    .testimonial-author {
+      display: flex; align-items: center; gap: 14px;
+    }
+    .author-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blush), var(--rose));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      color: white; font-size: 1.1rem;
+    }
+    .author-name {
+      font-size: 0.8rem; font-weight: 500; color: var(--espresso);
+    }
+    .author-role {
+      font-size: 0.7rem; color: var(--light-text); margin-top: 2px;
+    }
+
+    /* PROCESS */
+    #process {
+      padding: 120px 60px;
+      background: var(--cream);
+    }
+    .process-steps {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 0; margin-top: 64px;
+      position: relative;
+    }
+    .process-steps::before {
+      content: '';
+      position: absolute; top: 30px; left: 60px; right: 60px;
+      height: 1px; background: var(--sand);
+    }
+    .process-step { padding: 0 24px; position: relative; }
+    .step-dot {
+      width: 14px; height: 14px; border-radius: 50%;
+      background: var(--cream); border: 2px solid var(--rose);
+      position: relative; z-index: 2; margin-bottom: 28px;
+    }
+    .step-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.8rem; font-style: italic;
+      color: var(--rose); margin-bottom: 10px;
+    }
+    .step-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem; color: var(--espresso);
+      margin-bottom: 10px;
+    }
+    .step-desc {
+      font-size: 0.8rem; line-height: 1.7;
+      color: var(--light-text);
+    }
+
+    /* CONTACT */
+    #contact {
+      padding: 120px 60px;
+      background: var(--espresso);
+      display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+    }
+    #contact .section-label { color: var(--blush); }
+    #contact h2 { color: var(--cream); margin-bottom: 24px; }
+    #contact p {
+      color: var(--taupe); font-weight: 300;
+      line-height: 1.8; margin-bottom: 40px;
+    }
+    .contact-links { display: flex; flex-direction: column; gap: 16px; }
+    .contact-link {
+      display: flex; align-items: center; gap: 16px;
+      color: var(--sand); text-decoration: none;
+      font-size: 0.875rem; transition: color 0.3s;
+    }
+    .contact-link:hover { color: var(--blush); }
+    .contact-link-icon {
+      width: 40px; height: 40px;
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; transition: all 0.3s;
+    }
+    .contact-link:hover .contact-link-icon {
+      background: var(--rose); border-color: var(--rose); color: white;
+    }
+    .contact-form { display: flex; flex-direction: column; gap: 20px; }
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+    .form-label {
+      font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--taupe);
+    }
+    .form-input, .form-textarea {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: var(--cream);
+      padding: 14px 18px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.875rem; font-weight: 300;
+      outline: none; transition: border-color 0.3s;
+      resize: none;
+    }
+    .form-input:focus, .form-textarea:focus {
+      border-color: var(--rose);
+    }
+    .form-input::placeholder, .form-textarea::placeholder {
+      color: rgba(255,255,255,0.25);
+    }
+    .form-textarea { height: 120px; }
+    .btn-send {
+      padding: 16px 40px; background: var(--rose);
+      color: white; border: none; cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+      transition: all 0.3s; align-self: flex-start;
+    }
+    .btn-send:hover { background: var(--blush); }
+
+    /* FOOTER */
+    footer {
+      padding: 40px 60px;
+      background: var(--charcoal);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem; font-weight: 300;
+      color: var(--taupe);
+      letter-spacing: 0.1em;
+    }
+    .footer-copy {
+      font-size: 0.7rem; color: var(--mocha);
+      letter-spacing: 0.05em;
+    }
+    .social-links { display: flex; gap: 20px; }
+    .social-link {
+      font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--mocha); text-decoration: none; transition: color 0.3s;
+    }
+    .social-link:hover { color: var(--blush); }
+
+    /* ANIMATIONS */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* MOBILE */
+    @media (max-width: 900px) {
+      nav { padding: 20px 30px; }
+      nav.scrolled { padding: 14px 30px; }
+      .nav-links { display: none; }
+      #hero { grid-template-columns: 1fr; }
+      .hero-left { padding: 120px 30px 60px; }
+      .hero-right { height: 50vh; }
+      .hero-stats { left: 30px; bottom: 30px; }
+      #about { grid-template-columns: 1fr; padding: 80px 30px; gap: 40px; }
+      .services-grid { grid-template-columns: 1fr; }
+      #services, #portfolio, #testimonials, #process, #contact { padding: 80px 30px; }
+      .portfolio-grid { grid-template-columns: 1fr 1fr; }
+      .project-card { grid-column: span 1 !important; }
+      .testimonials-container { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: 1fr 1fr; }
+      #contact { grid-template-columns: 1fr; gap: 40px; }
+      footer { flex-direction: column; gap: 20px; padding: 30px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-follow" id="cursorFollow"></div>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="#" class="logo">N<span>ino</span></a>
+    <ul class="nav-links">
+      <li><a href="#about">ჩემ შესახებ</a></li>
+      <li><a href="#services">სერვისები</a></li>
+      <li><a href="#portfolio">პორტფოლიო</a></li>
+      <li><a href="#testimonials">შეფასებები</a></li>
+      <li><a href="#contact">კონტაქტი</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-left">
+      <div class="hero-tag">Creative Director & Designer</div>
+      <h1>
+        ვქმნი<br>
+        <em>ლამაზ</em><br>
+        ბრენდებს
+      </h1>
+      <p class="hero-subtitle">
+        დიზაინი, რომელიც ყვება ისტორიას — ვიზუალური იდენტობიდან ციფრულ გამოცდილებამდე.
+      </p>
+      <div class="hero-cta">
+        <a href="#portfolio" class="btn-primary">ნამუშევრების ნახვა</a>
+        <a href="#contact" class="btn-secondary">დაკავშირება →</a>
+      </div>
+      <div class="hero-stats" style="position:relative; left:auto; bottom:auto; margin-top:60px;">
+        <div class="stat">
+          <div class="stat-num">5+</div>
+          <div class="stat-label">წელი გამოცდილება</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">80+</div>
+          <div class="stat-label">პროექტი</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">40+</div>
+          <div class="stat-label">კლიენტი</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-image-frame">
+        <div class="hero-photo-placeholder">
+          <div class="photo-overlay-text">Nino</div>
+          <div style="text-align:center; color:rgba(255,255,255,0.5); font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1rem;">
+            [ თქვენი ფოტო ]
+          </div>
+        </div>
+      </div>
+      <div class="hero-scroll-hint">
+        <div class="scroll-line"></div>
+        <span>Scroll</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="reveal">
+      <div class="section-label">ჩემ შესახებ</div>
+      <h2>შემოქმედება<br>ჩემი <em>ენაა</em></h2>
+      <p class="about-text">
+        მე ვარ Nino — გრაფიკული დიზაინერი და ბრენდ სტრატეგი თბილისიდან. 
+        ვეხმარები ბიზნესებს შექმნან ვიზუალური იდენტობა, რომელიც მართლა 
+        გამოირჩევა — ნამდვილი, მშვენიერი და მიზანმიმართული.
+      </p>
+      <div class="skills-grid">
+        <div class="skill-item">
+          <div class="skill-name">Brand Identity</div>
+          <div class="skill-bar"><div class="skill-fill" data-width="92"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-name">UI/UX Design</div>
+          <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-name">Print & Editorial</div>
+          <div class="skill-bar"><div class="skill-fill" data-width="88"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-name">Motion & Video</div>
+          <div class="skill-bar"><div class="skill-fill" data-width="75"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="about-image-side reveal">
+      <div class="about-photo">
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.4);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;">[ ფოტო ]</div>
+        <div class="about-photo-deco"></div>
+      </div>
+      <div class="about-badge">
+        "დიზაინი სული მოდის სტრატეგიიდან"
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="section-header reveal">
+      <div>
+        <div class="section-label">სერვისები</div>
+        <h2>რას <em>ვთავაზობ</em></h2>
+      </div>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal">
+        <div class="service-num">01</div>
+        <div class="service-title">Brand Identity</div>
+        <p class="service-desc">ლოგო, ფერების პალიტრა, ტიპოგრაფია და სრული ბრენდ-ბუქი — ბიზნესი, რომელიც ამოიცნობა.</p>
+        <div class="service-tags"><span>Logo</span><span>Typography</span><span>Brand Book</span></div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-num">02</div>
+        <div class="service-title">UI/UX Design</div>
+        <p class="service-desc">ვებსაიტის და მობილური აპლიკაციის ინტერფეისი, რომელიც ლამაზია და მოსახმარებელი.</p>
+        <div class="service-tags"><span>Figma</span><span>Web Design</span><span>Prototyping</span></div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-num">03</div>
+        <div class="service-title">Print & Packaging</div>
+        <p class="service-desc">სავიზიტო ბარათი, შეფუთვა, პოსტერი — ფიზიკური მასალა, რომელიც ინახება.</p>
+        <div class="service-tags"><span>Packaging</span><span>Print</span><span>Poster</span></div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-num">04</div>
+        <div class="service-title">Social Media</div>
+        <p class="service-desc">Instagram, Facebook — ვიზუალური კონტენტი, Template-ები და Story-ების დიზაინი.</p>
+        <div class="service-tags"><span>Instagram</span><span>Templates</span><span>Content</span></div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-num">05</div>
+        <div class="service-title">Photography Direction</div>
+        <p class="service-desc">ფოტოსესიის კონცეფცია, სტილი და პოსტ-პროდუქცია — სრული ვიზუალური სიუჟეტი.</p>
+        <div class="service-tags"><span>Art Direction</span><span>Retouching</span></div>
+      </div>
+      <div class="service-card reveal">
+        <div class="service-num">06</div>
+        <div class="service-title">Brand Strategy</div>
+        <p class="service-desc">ბრენდის ხმა, პოზიციონირება, სამიზნე აუდიტორია — სანამ ვიზუალებზე გადავიდეთ.</p>
+        <div class="service-tags"><span>Strategy</span><span>Positioning</span><span>Voice</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO -->
+  <section id="portfolio">
+    <div class="section-header reveal">
+      <div>
+        <div class="section-label">პორტფოლიო</div>
+        <h2 style="color:var(--cream)">რჩეული <em>ნამუშევრები</em></h2>
+      </div>
+      <div class="portfolio-filter">
+        <button class="filter-btn active">ყველა</button>
+        <button class="filter-btn">Branding</button>
+        <button class="filter-btn">Web</button>
+        <button class="filter-btn">Print</button>
+      </div>
+    </div>
+    <div class="portfolio-grid">
+      <div class="project-card reveal">
+        <div class="project-thumb">
+          <div class="project-bg bg1"></div>
+          <div class="project-overlay">
+            <div class="project-category">Brand Identity</div>
+            <div class="project-name">Aura Beauty Studio</div>
+          </div>
+          <div class="project-arrow">→</div>
+        </div>
+        <div class="project-info">
+          <span class="project-title-small">Aura Beauty Studio</span>
+          <span class="project-year">2024</span>
+        </div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-thumb">
+          <div class="project-bg bg2"></div>
+          <div class="project-overlay">
+            <div class="project-category">Web Design</div>
+            <div class="project-name">Maison Fleur</div>
+          </div>
+          <div class="project-arrow">→</div>
+        </div>
+        <div class="project-info">
+          <span class="project-title-small">Maison Fleur</span>
+          <span class="project-year">2024</span>
+        </div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-thumb">
+          <div class="project-bg bg3"></div>
+          <div class="project-overlay">
+            <div class="project-category">Packaging</div>
+            <div class="project-name">Sage & Co.</div>
+          </div>
+          <div class="project-arrow">→</div>
+        </div>
+        <div class="project-info">
+          <span class="project-title-small">Sage & Co.</span>
+          <span class="project-year">2023</span>
+        </div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-thumb">
+          <div class="project-bg bg4"></div>
+          <div class="project-overlay">
+            <div class="project-category">Brand Identity</div>
+            <div class="project-name">Bloom Collective</div>
+          </div>
+          <div class="project-arrow">→</div>
+        </div>
+        <div class="project-info">
+          <span class="project-title-small">Bloom Collective</span>
+          <span class="project-year">2023</span>
+        </div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-thumb">
+          <div class="project-bg bg5"></div>
+          <div class="project-overlay">
+            <div class="project-category">Editorial</div>
+            <div class="project-name">Kartuli Magazine</div>
+          </div>
+          <div class="project-arrow">→</div>
+        </div>
+        <div class="project-info">
+          <span class="project-title-small">Kartuli Magazine</span>
+          <span class="project-year">2023</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section id="testimonials">
+    <div class="section-header reveal">
+      <div>
+        <div class="section-label">კლიენტები</div>
+        <h2>ისინი ამბობენ <em>ჩვენ შესახებ</em></h2>
+      </div>
+    </div>
+    <div class="testimonials-container">
+      <div class="testimonial-card reveal">
+        <span class="quote-mark">"</span>
+        <p class="testimonial-text">Nino-მ ბრენდი ისე გაიგო, თითქოს ჩვენი კომპანიის ნაწილი ყოფილიყო წლების განმავლობაში. შედეგი — ზუსტად ის, რაც გვინდოდა, მხოლოდ ბევრად უკეთესი.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">A</div>
+          <div>
+            <div class="author-name">Ana Beridze</div>
+            <div class="author-role">CEO, Bloom Studio</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal">
+        <span class="quote-mark">"</span>
+        <p class="testimonial-text">პროფესიონალიზმი და კრეატიულობა — ორივე ერთდროულად. ვებსაიტი, რომელიც შევქმენით, კლიენტების პირველი შეხება ბრენდთან გახდა.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">G</div>
+          <div>
+            <div class="author-name">Giorgi Kvaratskhelia</div>
+            <div class="author-role">Founder, Sage Coffee</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal">
+        <span class="quote-mark">"</span>
+        <p class="testimonial-text">სუფთა ვიზია, ზუსტი კომუნიკაცია, ვადების დაცვა. ვიმუშავეთ 3 პროექტზე და ყოველ ჯერზე — შედეგი ჩვენ მოლოდინს აღემატებოდა.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">M</div>
+          <div>
+            <div class="author-name">Mariam Gogua</div>
+            <div class="author-role">Marketing Dir., Maison Tbilisi</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process">
+    <div class="section-header reveal">
+      <div>
+        <div class="section-label">მუშაობის პროცესი</div>
+        <h2>როგორ <em>ვმუშაობ</em></h2>
+      </div>
+    </div>
+    <div class="process-steps">
+      <div class="process-step reveal">
+        <div class="step-dot"></div>
+        <div class="step-num">01 — გაცნობა</div>
+        <div class="step-title">Discovery</div>
+        <p class="step-desc">ვსაუბრობთ ბიზნესსა და მიზნებზე. ვეძებ პასუხებს კითხვებზე: ვინ ხართ, სად მიდიხართ, ვინ არის თქვენი კლიენტი.</p>
+      </div>
+      <div class="process-step reveal">
+        <div class="step-dot"></div>
+        <div class="step-num">02 — სტრატეგია</div>
+        <div class="step-title">Strategy</div>
+        <p class="step-desc">ვქმნი ბრენდის მიმართულებას — პოზიციონირება, ტონი, ვიზუალური სამყარო. სანამ ვხატავ.</p>
+      </div>
+      <div class="process-step reveal">
+        <div class="step-dot"></div>
+        <div class="step-num">03 — დიზაინი</div>
+        <div class="step-title">Design</div>
+        <p class="step-desc">ვქმნი 2-3 კონცეფციას. ერთად ვარჩევთ, ვახვეწთ, ვასრულებთ. ყოველ ნაბიჯზე — კომუნიკაცია.</p>
+      </div>
+      <div class="process-step reveal">
+        <div class="step-dot"></div>
+        <div class="step-num">04 — მიწოდება</div>
+        <div class="step-title">Delivery</div>
+        <p class="step-desc">ყველა ფაილი, ფორმატი, მითითება — ყველაფერი, რაც საჭიროა დამოუკიდებლად გამოყენებისთვის.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="reveal">
+      <div class="section-label">კონტაქტი</div>
+      <h2>დავიწყოთ <em>საუბარი</em></h2>
+      <p>გაქვთ პროექტი? გინდათ ვიმუშაოთ ერთად? მოწერეთ — პასუხს 24 საათში გავცემ.</p>
+      <div class="contact-links">
+        <a href="mailto:nino@design.ge" class="contact-link">
+          <div class="contact-link-icon">✉</div>
+          nino@design.ge
+        </a>
+        <a href="tel:+995555000000" class="contact-link">
+          <div class="contact-link-icon">☎</div>
+          +995 555 00 00 00
+        </a>
+        <a href="#" class="contact-link">
+          <div class="contact-link-icon">📷</div>
+          @nino.design.ge
+        </a>
+        <a href="#" class="contact-link">
+          <div class="contact-link-icon">in</div>
+          linkedin.com/in/ninodesign
+        </a>
+      </div>
+    </div>
+    <div class="reveal">
+      <form class="contact-form" onsubmit="handleSubmit(event)">
+        <div class="form-group">
+          <label class="form-label">სახელი</label>
+          <input type="text" class="form-input" placeholder="თქვენი სახელი" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">ელ-ფოსტა</label>
+          <input type="email" class="form-input" placeholder="your@email.com" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">სერვისი</label>
+          <input type="text" class="form-input" placeholder="Brand Identity, Web Design..." />
+        </div>
+        <div class="form-group">
+          <label class="form-label">შეტყობინება</label>
+          <textarea class="form-textarea" placeholder="მიყევით პროექტის შესახებ..."></textarea>
+        </div>
+        <button type="submit" class="btn-send" id="sendBtn">გაგზავნა →</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-logo">Nino — Design</div>
+    <div class="footer-copy">© 2024 Nino. ყველა უფლება დაცულია.</div>
+    <div class="social-links">
+      <a href="#" class="social-link">Instagram</a>
+      <a href="#" class="social-link">Behance</a>
+      <a href="#" class="social-link">LinkedIn</a>
+    </div>
+  </footer>
+
+  <script>
+    // CURSOR
+    const cursor = document.getElementById('cursor');
+    const follow = document.getElementById('cursorFollow');
+    let mx = 0, my = 0, fx = 0, fy = 0;
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.transform = `translate(${mx - 5}px, ${my - 5}px)`;
+    });
+    function animateFollow() {
+      fx += (mx - fx) * 0.12;
+      fy += (my - fy) * 0.12;
+      follow.style.transform = `translate(${fx - 18}px, ${fy - 18}px)`;
+      requestAnimationFrame(animateFollow);
+    }
+    animateFollow();
+
+    // NAV SCROLL
+    const nav = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 50);
+    });
+
+    // REVEAL ON SCROLL
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 80);
+        }
+      });
+    }, { threshold: 0.1 });
+    reveals.forEach(r => observer.observe(r));
+
+    // SKILL BARS
+    const skillObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.querySelectorAll('.skill-fill').forEach(fill => {
+            fill.style.width = fill.dataset.width + '%';
+          });
+        }
+      });
+    }, { threshold: 0.3 });
+    const skillSection = document.querySelector('#about');
+    if (skillSection) skillObserver.observe(skillSection);
+
+    // PORTFOLIO FILTER
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+
+    // FORM SUBMIT
+    function handleSubmit(e) {
+      e.preventDefault();
+      const btn = document.getElementById('sendBtn');
+      btn.textContent = 'გაიგზავნა ✓';
+      btn.style.background = '#7a6652';
+      setTimeout(() => {
+        btn.textContent = 'გაგზავნა →';
+        btn.style.background = '';
+        e.target.reset();
+      }, 3000);
+    }
+
+    // SMOOTH NAV
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const target = document.querySelector(a.getAttribute('href'));
+        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+      });
+    });
+  </script>
+</body>
+</html>
